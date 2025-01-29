@@ -20,4 +20,41 @@ contract TokenMaster is ERC721 {
         string location;
     }
     
+    mapping(uint256 => Occasion) occasion;
+    mapping(uint256 => mapping(address => bool)) public hasBought;
+    mapping(uint256 => mapping(uint256 => address)) public seatTaken;
+    mapping(uint256 => uint256[]) seatsTaken;
+
+    modifier onlyOwner(){
+        require(msg.sender == owner);
+        _;
+    }
+    constructor(
+        string memory _name,
+        string memory _symbol
+    ) ERC721(_name, _symbol) {
+        owner = msg.sender;
+    }
+
+    function list(
+        string memory _name,
+        uint256 _cost,
+        uint256 _maxTickets,
+        string memory _date,
+        string memory _time,
+        string memory _location
+    ) public onlyOwner {
+        totalOccasions++;
+
+        occasion[totalOccasions] = Occasion(
+            totalOccasions,
+            _name,
+            _cost,
+            0,
+            _maxTickets,
+            _date,
+            _time,
+            _location
+        );
+    }
 }
