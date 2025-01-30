@@ -50,7 +50,7 @@ contract TokenMaster is ERC721 {
             totalOccasions,
             _name,
             _cost,
-            _maxTickets,
+            0,
             _maxTickets,
             _date,
             _time,
