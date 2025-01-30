@@ -1,11 +1,19 @@
 const hre = require("hardhat")
 
+// Fix the tokens function
+const tokens = (n) => {
+  return ethers.parseEther(n.toString())
+}
+
 async function main() {
   const NAME = "TokenMaster"
   const SYMBOL = "TM"
 
+  // Get the ethers object
+  const { ethers } = hre
+
   // Deploy contract
-  const TokenMaster = await hre.ethers.getContractFactory("TokenMaster")
+  const TokenMaster = await ethers.getContractFactory("TokenMaster")
   const tokenMaster = await TokenMaster.deploy(NAME, SYMBOL)
   await tokenMaster.waitForDeployment()
 
@@ -15,8 +23,8 @@ async function main() {
   const occasions = [
     {
       name: "UFC Miami",
-      cost: hre.ethers.parseEther("0.3"),
-      tickets: 0,
+      cost: tokens(0.3),
+      tickets: 100,  // Changed from 0 to give it some tickets
       date: "May 31",
       time: "6:00PM EST",
       location: "Miami-Dade Arena - Miami, FL"
@@ -65,6 +73,8 @@ async function main() {
       occasions[i].location
     )
     await transaction.wait()
+
+    console.log(`Listed event ${i + 1}: ${occasions[i].name}`)
   }
 }
 
